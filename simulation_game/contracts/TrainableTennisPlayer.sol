@@ -1,13 +1,8 @@
 pragma solidity ^0.5.0;
 
 import "./TennisPlayerBase.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/SafeCast.sol";
 
 contract TrainableTennisPlayer is TennisPlayerBase {
-
-  using SafeMath for uint;
-  using SafeCast for uint;
 
   uint8 conditionCostToTrain = 5;
   uint8 xpCostToTrain = 8;
@@ -15,6 +10,9 @@ contract TrainableTennisPlayer is TennisPlayerBase {
 
   uint8 xpCostToRest = 6;
   uint8 conditionGainOnRest = 15;
+
+  event Train(uint indexed playerId, Attribute attribute);
+  event Rest(uint indexed playerId);
 
   enum Attribute { agility, power, stamina, technique }
 
@@ -36,6 +34,7 @@ contract TrainableTennisPlayer is TennisPlayerBase {
     else if (_attr == Attribute.technique) {
         players[_id].technique = castAdd8(players[_id].technique, attributeGainOnTrain);
     }
+    emit Train(_id, _attr);
   }
 
   function rest (uint _id) public {
@@ -59,5 +58,5 @@ contract TrainableTennisPlayer is TennisPlayerBase {
    function castSubtract256(uint _a, uint8 _b) private pure returns (uint) {
        return _a.sub(uint(_b));
    }
-   
+   emit Rest(_id);
 }
