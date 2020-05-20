@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hello World</title>
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+  <script language="javascript" type="text/javascript" src="./abi.js"></script>
+  <script language="javascript" type="text/javascript" src="./set.js"></script>
+  <script language="javascript" type="text/javascript" src="./get.js"></script>
+  <script>
+    var contractAddress = "0xC6c2535B93e8f9BF2266C69825Bc5931f16e9341";
+    var contract;
+    window.addEventListener('load', async () => {
+
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {            
+            await ethereum.enable();
+            contract = new web3.eth.Contract(abi, contractAddress);            
+            var message = await get();
+            var elm = document.getElementById('message');
+            elm.innerHTML = message;
+        }
+        catch(error) {
+            console.log(error);                
+        }
+    }
+    else {
+        console.log("try using Metamask");
+    }
+    });
+  </script>
+</head>
+<body>
+  <div id="message"></div>
+  <input type="text" id="newMessage" name="newMessage" placeholder="Type New Message"><br>
+  <button onclick="set()">Set new Message</button>
+</body>
+</html>
